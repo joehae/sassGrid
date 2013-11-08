@@ -1,0 +1,53 @@
+/**
+ *	Grid
+ *	requires compass/utilities
+ *
+ */
+
+// configurable grid variables
+
+$max-columns:		16;
+$gutter:				10px;
+$page-width:		960px;
+
+// making rows accessible as a mixin
+@mixin row {
+	width: 100%;
+	@include clearfix;
+}
+
+// creating the columns
+@mixin grid ($grid-cols: $max-columns, $grid-gutter: $gutter, $grid-width: $page-width) {
+	
+	$col-width:		$grid-width / $grid-cols;
+	
+	%col {
+		padding: 0 $gutter;
+		float: left;
+		@include box-sizing(border-box);
+	}
+	
+	.row {
+		@include row;
+	}
+	
+	// creating the columns
+	@for $i from 1 through $grid-cols {
+		.col-#{$i} {
+			width: $col-width * $i;
+			@extend %col;
+			
+			// setting an option to reset paddings
+			&.full {
+				padding: 0;
+			}
+		}
+	}
+	
+	// creating column-offsets
+	@for $i from 1 through $grid-cols {
+		.col-offset-by-#{$i} {
+			margin-left: ($i * $col-width);
+		}
+	}
+}
